@@ -21,6 +21,6 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-app:latest .
+        run: docker build -t ${{ env.DOCKER_USERNAME }}/spring-app:latest .
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
+        run: docker push ${{ env.DOCKER_USERNAME }}/spring-app:latest
