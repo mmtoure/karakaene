@@ -24,6 +24,6 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Docker image
-        run: docker build -t ${{ env.DOCKER_USERNAME }}/spring-app:latest .
+        run: docker build -t ${{ vars.DOCKER_USERNAME }}/spring-app:latest .
       - name: Push Docker image
-        run: docker push ${{ env.DOCKER_USERNAME }}/spring-app:latest
+        run: docker push ${{ vars.DOCKER_USERNAME }}/spring-app:latest
