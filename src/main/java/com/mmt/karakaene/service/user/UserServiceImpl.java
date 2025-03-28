@@ -1,8 +1,13 @@
 package com.mmt.karakaene.service.user;
 
+import com.mmt.karakaene.model.Role;
+import com.mmt.karakaene.model.TypeRole;
 import com.mmt.karakaene.model.User;
 import com.mmt.karakaene.repository.UserRepository;
+import com.mmt.karakaene.repository.ValidationRepository;
+import com.mmt.karakaene.service.validation.ValidationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +18,20 @@ import java.util.Optional;
 public class UserServiceImpl  implements UserService{
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final ValidationService validationService;
 
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        String passwordCrypted = this.passwordEncoder.encode(user.getPassword());
+        Role roleUser = new Role();
+        roleUser.setTypeRole(TypeRole.USER);
+        user.setRole(roleUser);
+        user.setPassword(passwordCrypted);
+        User newUser = userRepository.save(user);
+        this.validationService.validationByUser(newUser);
+        return newUser;
+
     }
 
     @Override

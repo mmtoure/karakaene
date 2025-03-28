@@ -3,16 +3,34 @@ package com.mmt.karakaene.controller;
 import com.mmt.karakaene.model.User;
 import com.mmt.karakaene.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
+
     private final UserService userService;
+
+    @PostMapping(path = "register")
+    public ResponseEntity<User> register(@RequestBody User user){
+        log.info("Register message");
+        User newUser =this.userService.createUser(user);
+        return new ResponseEntity<>(newUser,HttpStatus.CREATED);
+    }
+
+    @PostMapping("login")
+    public void login(){
+
+    }
 
     @PostMapping("api/users")
     public ResponseEntity<User> create(@RequestBody User user){
