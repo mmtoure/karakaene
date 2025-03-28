@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -37,6 +39,20 @@ public class ValidationServiceImpl implements ValidationService {
         Validation newValidation = this.validationRepository.save(validation);
         this.notificationEmailService.sendEmail(validation);
 
+    }
+    public Validation getValidationByCode(String code){
+      Optional<Validation> validation_opt = this.validationRepository.findByCode(code);
+      if (validation_opt.isPresent()){
+          Validation validation =validation_opt.get();
+          Instant activation = Instant.now();
+          validation.setActivation(activation);
+          return this.validationRepository.save(validation);
+      }
+      else{
+          throw  new RuntimeException("Validation not found");
+      }
+
+        
     }
 
     @Override

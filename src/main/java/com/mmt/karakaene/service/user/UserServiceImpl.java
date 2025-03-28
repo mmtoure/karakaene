@@ -3,6 +3,7 @@ package com.mmt.karakaene.service.user;
 import com.mmt.karakaene.model.Role;
 import com.mmt.karakaene.model.TypeRole;
 import com.mmt.karakaene.model.User;
+import com.mmt.karakaene.model.Validation;
 import com.mmt.karakaene.repository.UserRepository;
 import com.mmt.karakaene.repository.ValidationRepository;
 import com.mmt.karakaene.service.validation.ValidationService;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -31,6 +33,14 @@ public class UserServiceImpl  implements UserService{
         User newUser = userRepository.save(user);
         this.validationService.validationByUser(newUser);
         return newUser;
+
+    }
+
+    public void confirmationCode(Map<String,String> activation){
+        Validation validation = this.validationService.getValidationByCode(activation.get("code"));
+        User user = validation.getUser();
+        user.setActif(true);
+        this.userRepository.save(user);
 
     }
 

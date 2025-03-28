@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,6 +26,12 @@ public class UserController {
         log.info("Register message");
         User newUser =this.userService.createUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "activation")
+    public void activation(@RequestBody Map<String, String> activation){
+        this.userService.confirmationCode(activation);
+
     }
 
     @PostMapping("login")

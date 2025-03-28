@@ -3,6 +3,7 @@ package com.mmt.karakaene.service.user;
 import com.mmt.karakaene.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     User createUser(User user);
@@ -10,4 +11,5 @@ public interface UserService {
     User updateUser(User user, Long id) throws Exception;
     void deleteUser(Long id) throws Exception;
     List<User> getAllUsers();
+    void confirmationCode(Map<String,String> activation);
 }
