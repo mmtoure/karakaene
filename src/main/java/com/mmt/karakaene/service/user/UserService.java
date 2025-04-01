@@ -12,4 +12,5 @@ public interface UserService {
     void deleteUser(Long id) throws Exception;
     List<User> getAllUsers();
     void confirmationCode(Map<String,String> activation);
+    User loadUserByUsername (String username);
 }

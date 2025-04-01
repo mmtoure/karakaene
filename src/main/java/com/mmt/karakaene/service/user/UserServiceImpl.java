@@ -5,9 +5,10 @@ import com.mmt.karakaene.model.TypeRole;
 import com.mmt.karakaene.model.User;
 import com.mmt.karakaene.model.Validation;
 import com.mmt.karakaene.repository.UserRepository;
-import com.mmt.karakaene.repository.ValidationRepository;
 import com.mmt.karakaene.service.validation.ValidationService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class UserServiceImpl  implements UserService{
+@AllArgsConstructor
+public class UserServiceImpl  implements UserService, UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final ValidationService validationService;
+    private  UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder;
+    private  ValidationService validationService;
 
     @Override
     public User createUser(User user) {
@@ -81,5 +82,10 @@ public class UserServiceImpl  implements UserService{
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByEmail(username).orElseThrow(()-> new RuntimeException("User not found"));
     }
 }
